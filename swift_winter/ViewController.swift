@@ -10,20 +10,22 @@ import UIKit
 class ViewController: UIViewController {
     //数字を格納する場所
     var count = 0
-    var countGoal = Int.random(in: -10...10)
+    var goalNum = Int.random(in: 1...10)
     @IBOutlet weak var countLabel: UILabel!
-    @IBOutlet weak var goalNum: UILabel!
+    @IBOutlet weak var goalNumLabel: UILabel!
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        goalNum.text = String(countGoal)
+        goalNumLabel.text = String(goalNum)
     }
     @IBAction func countUpButton(_ sender: Any) {
-            //+ボタンを押すとラベルの文字をカウントアップ
+        //+ボタンを押すとラベルの文字をカウントアップ
         count = count + 1
         //画面遷移
-        if count == countGoal {
+        if count == goalNum {
             performSegue(withIdentifier: "nextScreen", sender: nil)
+            goalNum = Int.random(in: -10...10)
+            goalNumLabel.text = String(goalNum)
         }
         countLabel.text = String(count)
             //カウントにあわせて文字の色を変更
@@ -39,6 +41,11 @@ class ViewController: UIViewController {
     @IBAction func countDounButton(_ sender: Any) {
          //-ボタンを押すとラベルの文字をカウントダウン
         count = count - 1
+        if count == goalNum {
+            performSegue(withIdentifier: "nextScreen", sender: nil)
+            goalNum = Int.random(in: -10...10)
+            goalNumLabel.text = String(goalNum)
+        }
         countLabel.text = String(count)
         //カウントにあわせて文字の色を変更
         changeTextColor()
@@ -46,14 +53,18 @@ class ViewController: UIViewController {
 
 //ラベルの色を変更するメソッドを定義する
     func changeTextColor() {
-        if count >= 5 {
+        if count > 0 {
             countLabel.textColor = UIColor.green
-        }else if count < 0 {
-            countLabel.textColor = UIColor.red
-        }else {
+        }else if count == 0 {
             countLabel.textColor = UIColor.black
+        }else {
+            countLabel.textColor = UIColor.red
         }
     }
+    // ゴールをランダムで作成する。
+//    func createGoal() {
+//        goalNum = Int.random(in: -10...10)
+//    }
 
 }
 
